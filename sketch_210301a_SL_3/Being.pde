@@ -11,15 +11,25 @@ class Being {
   float nx, ny = 0.0;
   float timeAlive;
   float r = 1;
-  Being(float _x, float _y) {
-    loc = new PVector(_x, _y);
+  float col;
+  float dist;
+
+  DNA dna;
+
+  Being(PVector l, DNA dna_) {
+    dna = dna_;
+
+    col = map(dna.genes[0][0], 0, 1, 0, 255);
+    maxspeed = map(dna.genes[1][0], 0, 1, 1, 4);
+
+    loc = l;
     acc = new PVector(0, 0);
     vel = new PVector(0, 0);
 
     px = loc.x;
     py = loc.y;
     hunger = 1;
-    maxspeed = 3;
+    //maxspeed = 3;
     maxforce = 0.1;
     timeAlive=0;
 
@@ -28,18 +38,19 @@ class Being {
     tz = random(10);
   }
 
-  //void control() {
-  //  if (hunger<2) {
-  //    foodState();
-  //  } else {
-  //    neutralState();
-  //  }
-  //}
-
-  void foodState(PVector target) {
-    if (hunger<5) {
-      arrive(target);
+  void control(Food target) {
+    if (hunger<2) {
+      foodState(target);
+    } else {
+      neutralState();
     }
+  }
+
+  void foodState(Food target) {
+    //if (hunger<5) {
+    //  arrive(target);
+    //}
+    hunt(target);
     update();
     //display();
   }
@@ -54,15 +65,15 @@ class Being {
   }
 
   void display() {
-    if (hunger>3) {
-      fill(255);
-    } else {
-      fill(51);
-    }
+    //if (hunger>3) {
+    //  fill(255);
+    //} else {
+    //  fill(51);
+    //}
+    fill(col);
+    noStroke();
     r=map(timeAlive, 0, 1200, 1, 7);
     float theta = vel.heading() + PI/2;
-    //fill(175);
-    //stroke(0);
     pushMatrix();
     translate(loc.x, loc.y);
     rotate(theta);
@@ -87,6 +98,38 @@ class Being {
     tz += 0.1;
 
     timeAlive++;
+  }
+
+  void getDistance(Food f) {
+    ArrayList<PVector> food = f.getFood();
+    for (int i = food.size()-1; i >= 0; i--) {
+      PVector foodposition = food.get(i);
+      float d = PVector.dist(loc, foodposition);
+    }
+  }
+  void eat(Food f) {
+    ArrayList<PVector> food = f.getFood();
+    for (int i = food.size()-1; i >= 0; i--) {
+      PVector foodposition = food.get(i);
+      float d = PVector.dist(loc, foodposition);
+
+      // If we are, juice up our strength!
+      if (d < r*2) {
+        //health += 100; 
+        hunger++;
+        food.remove(i);
+      }
+    }
+  }
+  void hunt(Food f) {
+    ArrayList<PVector> food = f.getFood();
+    for (int i = food.size()-1; i >= 0; i--) {
+      PVector foodposition = food.get(i);
+      float d = PVector.dist(loc, foodposition);
+      if (d<50) {
+        arrive(foodposition);
+      }
+    }
   }
 
   void applyForce(PVector force) {
@@ -140,7 +183,7 @@ class Being {
       //py = height;
     }
   }
-  
+
   void separate(ArrayList<Being> vehicles) {
     float desiredseparation = r*5; //insert 'r' here
     PVector sum = new PVector();
@@ -163,6 +206,5 @@ class Being {
       steer.limit(1);
       applyForce(steer);
     }
- 
   }
 }
