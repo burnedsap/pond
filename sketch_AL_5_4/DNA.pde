@@ -1,11 +1,8 @@
-/*
-  This creates the structure for the DNA, not that important in the larger scheme of things
-*/
 class DNA {
   float[][] genes; 
 
   DNA() {
-    genes = new float[5][1];
+    genes = new float[6][1];
     for (int j = 0; j < genes.length; j++) {
       for (int i = 0; i < 1; i++) {
         genes[j][i] = random(0, 1);

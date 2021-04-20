@@ -2,19 +2,19 @@ class World {
   ArrayList<Plant> plnt;
   ArrayList<Opus> op;
   ArrayList<Hachi> hc;
-  
-  //variables for displaying stats
   float OpusAvgSpeed = 0;
   float OpusAvgHtr = 0;
   float OpusAvgVision = 0;
   float OpusAvgAge = 0;
+    float OpusAvgShare = 0;
   float HachiAvgSpeed = 0;
   float HachiAvgHtr = 0;
   float HachiAvgVision = 0;
   float HachiAvgAge = 0;
 
 
-  World(int h_, int o_, int p_) { //loads up number of entities
+
+  World(int h_, int o_, int p_) {
     plnt = new ArrayList<Plant>();
     for (int i=0; i<p_; i++) {
       plnt.add(new Plant());
@@ -48,10 +48,12 @@ class World {
     text("Rpdc", 60, height-40);
     text("Vision", 110, height-40);
     text("Age", 160, height-40);
+    text("Share", 210, height-40);
     text(OpusAvgSpeed/op.size(), 10, height-23);
     text(OpusAvgHtr/op.size(), 60, height-23);
     text(OpusAvgVision/op.size(), 110, height-23);
     text(OpusAvgAge/op.size(), 160, height-23);
+    text(OpusAvgShare/op.size(), 210, height-23);
     OpusAvgSpeed = 0;
     OpusAvgHtr = 0;
     OpusAvgVision = 0;
@@ -61,17 +63,16 @@ class World {
     text("Rpdc", 410, height-40);
     text("Vision", 460, height-40);
     text("Age", 510, height-40);
-    text(HachiAvgSpeed/hc.size(), 360, height-23);
-    text(HachiAvgHtr/hc.size(), 410, height-23);
-    text(HachiAvgVision/hc.size(), 460, height-23);
-    text(HachiAvgAge/hc.size(), 510, height-23);
+    text(HachiAvgSpeed/op.size(), 360, height-23);
+    text(HachiAvgHtr/op.size(), 410, height-23);
+    text(HachiAvgVision/op.size(), 460, height-23);
+    text(HachiAvgAge/op.size(), 510, height-23);
     HachiAvgSpeed = 0;
     HachiAvgHtr = 0;
     HachiAvgVision = 0;
     HachiAvgAge = 0;
+    OpusAvgShare = 0;
 
-
-    //make everything run
     for (int i=0; i<plnt.size(); i++) {
       Plant part = plnt.get(i);
       part.run(plnt);
@@ -83,6 +84,7 @@ class World {
       OpusAvgSpeed += map(part.dna.genes[0][0], 0, 1, 1, 5);
       OpusAvgHtr += map(part.dna.genes[2][0], 0, 1, 2, 7);
       OpusAvgVision += map(part.dna.genes[1][0], 0, 1, 20, 120);
+      OpusAvgShare += map(part.dna.genes[5][0], 0, 1, 0, 1);
       OpusAvgAge += map(part.dna.genes[3][0], 0, 1, 2000/frameRate, 6000/frameRate);
     }
     for (int i=0; i<hc.size(); i++) {

@@ -1,9 +1,8 @@
 /*
-2nd in food chain
-Eats Food
-Eaten by Opus
+3rd in food chain
+Eats Opus
 */
-class Opus {
+class Hachi {
   PVector loc;
   PVector vel;
   PVector acc;
@@ -20,15 +19,15 @@ class Opus {
   //colour
 
 
-  Opus(PVector l, DNA dna_) {
+  Hachi(PVector l, DNA dna_) {
     dna = dna_;
-    maxspeed = map(dna.genes[0][0], 0, 1, 1, 5); //maximum speed
-    hmaxspeed = maxspeed+1; //sets higher version of maxspeed when really hungry
-    vision = map(dna.genes[1][0], 0, 1, 20, 120); //radius of how much it can 'sense' around it
-    reproduce = map(dna.genes[2][0], 0, 1, 2, 7); //amount of food needed before it can reproduce
-    age = map(dna.genes[3][0], 0, 1, 2000, 6000); //how long does it naturally live for
-    hunger = map(dna.genes[4][0], 0, 1, 1, 4); //how much food is it born with
-    col = map(dna.genes[0][0], 0, 1, 0, 127); //colour mapped to maximum speed
+    maxspeed = map(dna.genes[0][0], 0, 1, 1, 5);
+    hmaxspeed = maxspeed+1;
+    vision = map(dna.genes[1][0], 0, 1, 20, 100);
+    reproduce = map(dna.genes[2][0], 0, 1, 4, 7);
+    age = map(dna.genes[3][0], 0, 1, 2000, 6000);
+    hunger = map(dna.genes[4][0], 0, 1, 1, 4);
+    col = map(dna.genes[0][0], 0, 1, 0, 359);
 
     loc = new PVector(l.x, l.y);
     acc = new PVector(0, 0);
@@ -37,7 +36,7 @@ class Opus {
     px = loc.x;
     py = loc.y;
 
-    maxforce = 0.3;
+    maxforce = 0.1;
     r = 1;
     //timeAlive=random(4000, 5000);
 
@@ -45,56 +44,58 @@ class Opus {
     ty = random(10000);
     tz = random(10);
   }
-  void run(ArrayList<Plant> p, ArrayList<Opus> o) {
-    update(p);
-    cull(o, p);
-
-    FloatList plantDistance = new FloatList();
-    for (int i = 0; i<p.size(); i++) {
-      Plant part = p.get(i);
-      PVector foodposition = part.loc;
-      float d = PVector.dist(loc, foodposition);
-      plantDistance.append(d);
-    }
-    float minPlantVal = plantDistance.min();
-    int plantTemp = plantDistance.index(minPlantVal);
-    PVector plantPosition = p.get(plantTemp).loc;
-    float plantSize = p.get(plantTemp).r;
+  void run(ArrayList<Opus> o, ArrayList<Hachi> h) {
+    update(o);
+    cull(h);
 
     FloatList opusDistance = new FloatList();
     for (int i = 0; i<o.size(); i++) {
       Opus part = o.get(i);
-      float d = PVector.dist(loc, part.loc);
-      if ((d==0.0)) {
-        opusDistance.append(1000);
-      } else {
-        opusDistance.append(d);
-      }
+      PVector opusPosition = part.loc;
+      float d = PVector.dist(loc, opusPosition);
+      opusDistance.append(d);
     }
-
     float minOpusVal = vision+10;
-    PVector ltemp = new PVector(random(width), random(height));
-    DNA dnatemp = new DNA();
-    Opus exo = new Opus(ltemp, dnatemp);
     PVector opusPosition = new PVector();
+    float opusSize = 1000;
     if (opusDistance.size()>0) {
       minOpusVal = opusDistance.min();
       int opusTemp = opusDistance.index(minOpusVal);
-      exo = o.get(opusTemp);
       opusPosition = o.get(opusTemp).loc;
+      opusSize = o.get(opusTemp).r;
     }
 
-
+    FloatList hachiDistance = new FloatList();
+    for (int i = 0; i<h.size(); i++) {
+      Hachi part = h.get(i);
+      float d = PVector.dist(loc, part.loc);
+      if ((d==0.0)) {
+        hachiDistance.append(1000);
+      } else {
+        hachiDistance.append(d);
+      }
+    }
+    float minHachiVal = vision+10;
+    PVector hachiPosition = new PVector();
+    PVector ltemp = new PVector(random(width), random(height));
+    DNA dnatemp = new DNA();
+    Hachi exo = new Hachi(ltemp, dnatemp);
+    if (hachiDistance.size()>0) {
+      minHachiVal= hachiDistance.min();
+      int hachiTemp = hachiDistance.index(minHachiVal);
+      exo = h.get(hachiTemp);
+      hachiPosition = h.get(hachiTemp).loc;
+    } 
     //Controllers
-    if ((minPlantVal<vision)&&(hunger<4)&&(plantSize<r*3)) {
-      stroke(359, 100);
-      line(loc.x, loc.y, plantPosition.x, plantPosition.y);
-      arrive(plantPosition);
-    } else if ((minOpusVal<vision)&&(hunger>reproduce)&&(exo.hunger>exo.reproduce)) {
-      stroke(359, 100);
+    if ((minOpusVal<vision)&&(hunger<4)&&(opusSize<r*1.2)) {
+      stroke(309, 100);
       line(loc.x, loc.y, opusPosition.x, opusPosition.y);
       arrive(opusPosition);
-      if ((minOpusVal<10)&&(exo.hunger>exo.reproduce)) {
+    } else if ((minHachiVal<vision)&&(hunger>reproduce)&&(exo.hunger>exo.reproduce)) {
+      stroke(309, 100);
+      line(loc.x, loc.y, hachiPosition.x, hachiPosition.y);
+      arrive(hachiPosition);
+      if ((minHachiVal<10)&&(exo.hunger>exo.reproduce)) {
         DNA dna_ = new DNA();
         for (int i=0; i<dna_.genes.length; i++) {
           if (random(1)<0.5) {
@@ -112,7 +113,7 @@ class Opus {
         }
 
         PVector l = new PVector(loc.x, loc.y);
-        o.add(new Opus(l, dna_));
+        h.add(new Hachi(l, dna_));
         //println("new: "+(hunger-htr)+" "+(exo.hunger-exo.htr));
         hunger = 2;
         exo.hunger = 2;
@@ -125,30 +126,32 @@ class Opus {
     }
   }
 
-  void cull(ArrayList<Opus> o, ArrayList<Plant> p) { //killing mechanism-either of old age, or of hunger
-    for (int i = 0; i<o.size(); i++) {
-      Opus part = o.get(i);
+  void cull(ArrayList<Hachi> h) {
+    for (int i = 0; i<h.size(); i++) {
+      Hachi part = h.get(i);
       if (part.hunger<0) {
-        o.remove(i);
-        p.add(new Plant());
+        h.remove(i);
+        println("Hachi Food Death");
+        //p.add(new Plant());
       }
       if (part.age<0) {
-        o.remove(i);
-        p.add(new Plant());
+        h.remove(i);
+         println("Hachi Age Death");
+        //p.add(new Plant());
       }
     }
   }
 
 
-  void display() { //displays stuff
+  void display() {
     colorMode(HSB, 360, 100, 100);
-    fill(col, 70, 70);
+    fill(0);
     noStroke();
     r = map(hunger, 0, 10, 0, 8);
     float theta = vel.heading() + PI/2;
     pushMatrix();
     translate(loc.x, loc.y);
-    //text(vel.mag(), 0, 0);
+    //text(hunger, 0, 0);
     rotate(theta);
     beginShape();
     noStroke();
@@ -158,13 +161,12 @@ class Opus {
     endShape(CLOSE);
     popMatrix();
   }
-  void update(ArrayList<Plant> p) { //consolidates everything to keep it smooth and moving
+  void update(ArrayList<Opus> p) {
     wall();
     vel.add(acc);
     vel.limit(maxspeed);
     loc.add(vel);
     acc.mult(0);
-
     if (hunger<1) {
       maxspeed=hmaxspeed;
     }
@@ -182,25 +184,23 @@ class Opus {
     display();
   }
 
-  void eat(ArrayList<Plant> p) { //eating engine
-    for (int i = 0; i<p.size(); i++) {
-      Plant part = p.get(i);
+  void eat(ArrayList<Opus> o) {
+    for (int i = 0; i<o.size(); i++) {
+      Opus part = o.get(i);
       PVector foodposition = part.loc;
       float d = PVector.dist(loc, foodposition);
-      float pSize = part.r;
 
       if (d < r*3) {
-
-        hunger+=map(pSize, 1, 10, 1, 2);
-        p.remove(i);
+        hunger++;
+        o.remove(i);
       }
     }
   }
 
-  void applyForce(PVector force) { //ehh boring bit dont touch
+  void applyForce(PVector force) {
     acc.add(force);
   }
-  void arrive(PVector target) { //provides a nice easing approach to target (food or mate)
+  void arrive(PVector target) {
     //fill(0);
     //text("eat", loc.x, loc.y+10);
     PVector desired = PVector.sub(target, loc);
@@ -217,7 +217,7 @@ class Opus {
     applyForce(steer);
   }
 
-  void wall() { //keeps everyone within boundaries
+  void wall() {
     PVector desired = vel.copy();
     if (loc.x > width-15) {
       desired = new PVector(maxspeed * -1, vel.y);

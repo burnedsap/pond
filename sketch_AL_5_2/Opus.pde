@@ -14,6 +14,7 @@ class Opus {
   float hmaxspeed;
   float hunger;
   float nx, ny = 0.0;
+  float share;
   DNA dna;
   float r;
   //DNA Metrics
@@ -22,13 +23,14 @@ class Opus {
 
   Opus(PVector l, DNA dna_) {
     dna = dna_;
-    maxspeed = map(dna.genes[0][0], 0, 1, 1, 5); //maximum speed
-    hmaxspeed = maxspeed+1; //sets higher version of maxspeed when really hungry
-    vision = map(dna.genes[1][0], 0, 1, 20, 120); //radius of how much it can 'sense' around it
-    reproduce = map(dna.genes[2][0], 0, 1, 2, 7); //amount of food needed before it can reproduce
-    age = map(dna.genes[3][0], 0, 1, 2000, 6000); //how long does it naturally live for
-    hunger = map(dna.genes[4][0], 0, 1, 1, 4); //how much food is it born with
-    col = map(dna.genes[0][0], 0, 1, 0, 127); //colour mapped to maximum speed
+    maxspeed = map(dna.genes[0][0], 0, 1, 1, 5);
+    hmaxspeed = maxspeed+1;
+    vision = map(dna.genes[1][0], 0, 1, 20, 120);
+    reproduce = map(dna.genes[2][0], 0, 1, 2, 7);
+    age = map(dna.genes[3][0], 0, 1, 2000, 6000);
+    hunger = map(dna.genes[4][0], 0, 1, 1, 4);
+    col = map(dna.genes[0][0], 0, 1, 0, 127);
+    share = map(dna.genes[5][0], 0, 1, 0, 1);
 
     loc = new PVector(l.x, l.y);
     acc = new PVector(0, 0);
@@ -86,6 +88,11 @@ class Opus {
 
 
     //Controllers
+    if ((minOpusVal<r*2)&&(hunger>reproduce)&&(hunger>exo.hunger)&&(share>0.5)&&(exo.share>0.5)){
+      println("Food Shared");
+      hunger--;
+      exo.hunger++;
+    }
     if ((minPlantVal<vision)&&(hunger<4)&&(plantSize<r*3)) {
       stroke(359, 100);
       line(loc.x, loc.y, plantPosition.x, plantPosition.y);
@@ -125,7 +132,7 @@ class Opus {
     }
   }
 
-  void cull(ArrayList<Opus> o, ArrayList<Plant> p) { //killing mechanism-either of old age, or of hunger
+  void cull(ArrayList<Opus> o, ArrayList<Plant> p) {
     for (int i = 0; i<o.size(); i++) {
       Opus part = o.get(i);
       if (part.hunger<0) {
@@ -140,7 +147,7 @@ class Opus {
   }
 
 
-  void display() { //displays stuff
+  void display() {
     colorMode(HSB, 360, 100, 100);
     fill(col, 70, 70);
     noStroke();
@@ -158,7 +165,7 @@ class Opus {
     endShape(CLOSE);
     popMatrix();
   }
-  void update(ArrayList<Plant> p) { //consolidates everything to keep it smooth and moving
+  void update(ArrayList<Plant> p) {
     wall();
     vel.add(acc);
     vel.limit(maxspeed);
@@ -182,7 +189,7 @@ class Opus {
     display();
   }
 
-  void eat(ArrayList<Plant> p) { //eating engine
+  void eat(ArrayList<Plant> p) {
     for (int i = 0; i<p.size(); i++) {
       Plant part = p.get(i);
       PVector foodposition = part.loc;
@@ -197,10 +204,10 @@ class Opus {
     }
   }
 
-  void applyForce(PVector force) { //ehh boring bit dont touch
+  void applyForce(PVector force) {
     acc.add(force);
   }
-  void arrive(PVector target) { //provides a nice easing approach to target (food or mate)
+  void arrive(PVector target) {
     //fill(0);
     //text("eat", loc.x, loc.y+10);
     PVector desired = PVector.sub(target, loc);
@@ -217,7 +224,7 @@ class Opus {
     applyForce(steer);
   }
 
-  void wall() { //keeps everyone within boundaries
+  void wall() {
     PVector desired = vel.copy();
     if (loc.x > width-15) {
       desired = new PVector(maxspeed * -1, vel.y);

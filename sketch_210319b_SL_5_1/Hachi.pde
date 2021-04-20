@@ -1,3 +1,7 @@
+/*
+3rd in food chain
+Eats Opus
+*/
 class Hachi {
   PVector loc;
   PVector vel;
@@ -17,33 +21,38 @@ class Hachi {
 
   Hachi(PVector l, DNA dna_) {
     dna = dna_;
-    maxspeed = map(dna.genes[0][0], 0, 1, 1, 5);
-    hmaxspeed = maxspeed+1;
-    vision = map(dna.genes[1][0], 0, 1, 20, 100);
-    reproduce = map(dna.genes[2][0], 0, 1, 4, 7);
-    age = map(dna.genes[3][0], 0, 1, 2000, 6000);
-    hunger = map(dna.genes[4][0], 0, 1, 1, 4);
-    col = map(dna.genes[0][0], 0, 1, 0, 359);
+    maxspeed = map(dna.genes[0][0], 0, 1, 1, 5); //maximum speed
+    hmaxspeed = maxspeed+1; //sets higher version of maxspeed when really hungry
+    vision = map(dna.genes[1][0], 0, 1, 20, 100); //radius of how much it can 'sense' around it
+    reproduce = map(dna.genes[2][0], 0, 1, 4, 7); //amount of food needed before it can reproduce
+    age = map(dna.genes[3][0], 0, 1, 2000, 6000); //how long does it naturally live for
+    hunger = map(dna.genes[4][0], 0, 1, 1, 4); //how much food is it born with
+    col = map(dna.genes[0][0], 0, 1, 0, 359); //colour mapped to maximum speed
 
+    //each being is basically a vector
     loc = new PVector(l.x, l.y);
     acc = new PVector(0, 0);
     vel = new PVector(0, 0);
 
     px = loc.x;
     py = loc.y;
-
+    
+    //turning speed
     maxforce = 0.1;
+    
+    //initial radius of being, but immediately resets to how much food it has
     r = 1;
-    //timeAlive=random(4000, 5000);
-
+    
+    //noise variables for random movement
     tx = random(100);
     ty = random(10000);
     tz = random(10);
   }
-  void run(ArrayList<Opus> o, ArrayList<Hachi> h) {
+  void run(ArrayList<Opus> o, ArrayList<Hachi> h) { //takes in arrays of Opus (food) and fellow Hachi
     update(o);
     cull(h);
-
+    
+    //finds location of all Opus (food) 
     FloatList opusDistance = new FloatList();
     for (int i = 0; i<o.size(); i++) {
       Opus part = o.get(i);
@@ -61,6 +70,7 @@ class Hachi {
       opusSize = o.get(opusTemp).r;
     }
 
+    //finds location of all Hachi
     FloatList hachiDistance = new FloatList();
     for (int i = 0; i<h.size(); i++) {
       Hachi part = h.get(i);
@@ -82,16 +92,17 @@ class Hachi {
       exo = h.get(hachiTemp);
       hachiPosition = h.get(hachiTemp).loc;
     } 
-    //Controllers
-    if ((minOpusVal<vision)&&(hunger<4)&&(opusSize<r*1.2)) {
+    
+    //Controllers (switches between active states based on set parameters (b/w looking for food, mates, or just randomly moving around
+    if ((minOpusVal<vision)&&(hunger<4)&&(opusSize<r*1.2)) { //hunt for food within its 'vision' and if food isn't too much bigger than it
       stroke(309, 100);
       line(loc.x, loc.y, opusPosition.x, opusPosition.y);
       arrive(opusPosition);
-    } else if ((minHachiVal<vision)&&(hunger>reproduce)&&(exo.hunger>exo.reproduce)) {
+    } else if ((minHachiVal<vision)&&(hunger>reproduce)&&(exo.hunger>exo.reproduce)) { //if ready, look for eligible mates
       stroke(309, 100);
       line(loc.x, loc.y, hachiPosition.x, hachiPosition.y);
       arrive(hachiPosition);
-      if ((minHachiVal<10)&&(exo.hunger>exo.reproduce)) {
+      if ((minHachiVal<10)&&(exo.hunger>exo.reproduce)) { //if mate found, swap genes with DNA
         DNA dna_ = new DNA();
         for (int i=0; i<dna_.genes.length; i++) {
           if (random(1)<0.5) {
@@ -114,7 +125,7 @@ class Hachi {
         hunger = 2;
         exo.hunger = 2;
       }
-    } else {
+    } else { //if nothing matches above states, randomly move around
       nx = map(noise(tx, tz), 0, 1, -0.1, 0.1);
       ny = map(noise(ty, tz), 0, 1, -0.1, 0.1);
       acc.y = ny;
@@ -122,7 +133,7 @@ class Hachi {
     }
   }
 
-  void cull(ArrayList<Hachi> h) {
+  void cull(ArrayList<Hachi> h) { //killing mechanism-either of old age, or of hunger
     for (int i = 0; i<h.size(); i++) {
       Hachi part = h.get(i);
       if (part.hunger<0) {
@@ -139,7 +150,7 @@ class Hachi {
   }
 
 
-  void display() {
+  void display() { //displays stuff
     colorMode(HSB, 360, 100, 100);
     fill(0);
     noStroke();
@@ -157,7 +168,7 @@ class Hachi {
     endShape(CLOSE);
     popMatrix();
   }
-  void update(ArrayList<Opus> p) {
+  void update(ArrayList<Opus> p) { //consolidates everything to keep it smooth and moving
     wall();
     vel.add(acc);
     vel.limit(maxspeed);
@@ -180,7 +191,7 @@ class Hachi {
     display();
   }
 
-  void eat(ArrayList<Opus> o) {
+  void eat(ArrayList<Opus> o) { //eating engine
     for (int i = 0; i<o.size(); i++) {
       Opus part = o.get(i);
       PVector foodposition = part.loc;
@@ -193,10 +204,11 @@ class Hachi {
     }
   }
 
-  void applyForce(PVector force) {
+  void applyForce(PVector force) { //ehh boring bit dont touch
     acc.add(force);
   }
-  void arrive(PVector target) {
+  
+  void arrive(PVector target) { //provides a nice easing approach to target (food or mate)
     //fill(0);
     //text("eat", loc.x, loc.y+10);
     PVector desired = PVector.sub(target, loc);
@@ -213,7 +225,7 @@ class Hachi {
     applyForce(steer);
   }
 
-  void wall() {
+  void wall() { //keeps everyone within boundaries
     PVector desired = vel.copy();
     if (loc.x > width-15) {
       desired = new PVector(maxspeed * -1, vel.y);

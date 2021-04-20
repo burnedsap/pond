@@ -2,8 +2,6 @@ class World {
   ArrayList<Plant> plnt;
   ArrayList<Opus> op;
   ArrayList<Hachi> hc;
-  
-  //variables for displaying stats
   float OpusAvgSpeed = 0;
   float OpusAvgHtr = 0;
   float OpusAvgVision = 0;
@@ -14,7 +12,7 @@ class World {
   float HachiAvgAge = 0;
 
 
-  World(int h_, int o_, int p_) { //loads up number of entities
+  World(int h_, int o_, int p_) {
     plnt = new ArrayList<Plant>();
     for (int i=0; i<p_; i++) {
       plnt.add(new Plant());
@@ -70,8 +68,6 @@ class World {
     HachiAvgVision = 0;
     HachiAvgAge = 0;
 
-
-    //make everything run
     for (int i=0; i<plnt.size(); i++) {
       Plant part = plnt.get(i);
       part.run(plnt);
