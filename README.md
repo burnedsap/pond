@@ -1,7 +1,7 @@
 # pond
 zoomin
 
-
+Use 5_1 for commented code and version to play around with
 
 To Do List
 
@@ -21,3 +21,4 @@ To Do List
 
 Issues
 - imbalanced performance
+
