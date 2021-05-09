@@ -3,9 +3,9 @@ layout: page
 title: About
 ---
 
-## MS2 Documentation
+## Pond
 
 by salil parekh
 
-guided by colleen macklin
+guided by remina greenfield and shuyi cao
 

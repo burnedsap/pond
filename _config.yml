@@ -2,11 +2,11 @@
 permalink:           pretty
 
 # Setup
-title:               MS2
-tagline:             documentation blog
-url:                 https://burnedsap.github.io/ms2
+title:               Pond
+tagline:             Artificial Life system with Processing
+url:                 https://burnedsap.github.io/pond
 paginate:            1
-baseurl:             https://burnedsap.github.io/ms2
+baseurl:             https://burnedsap.github.io/pond
 
 # Assets
 #
@@ -24,7 +24,7 @@ author:
 # Custom vars
 version:             2.1.0
 github:
-  repo:              https://github.com/burnedsap/ms2
+  repo:              https://github.com/burnedsap/pond
 
 # Gems
 gems:
