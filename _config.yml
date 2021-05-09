@@ -1,0 +1,32 @@
+# Permalinks
+permalink:           pretty
+
+# Setup
+title:               MS2
+tagline:             documentation blog
+url:                 https://burnedsap.github.io/ms2
+paginate:            1
+baseurl:             https://burnedsap.github.io/ms2
+
+# Assets
+#
+# We specify the directory for Jekyll so we can use @imports.
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+# About/contact
+author:
+  name:              Salil Parekh
+  url:               https://twitter.com/burnedsap
+  email:             pares667@newschool.edu
+
+# Custom vars
+version:             2.1.0
+github:
+  repo:              https://github.com/burnedsap/ms2
+
+# Gems
+gems:
+  - jekyll-paginate
+  - jekyll-gist
