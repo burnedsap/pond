@@ -79,14 +79,10 @@ A. A relevant question, given that humans are asking themselves the same questio
 
 This ecosystem, or the pond as it’s affectionately known serves a functional test-bed to research and answer questions one might have. It’s also a fun tool to play around with, as changing the values of the various parameters can lead to interesting outcomes. To make the pond accessible, a control panel with various parameter controls was developed. It contains various controls, as well as a reset button, which makes it easy to set parameters, reset and view the outcome without having to recompile and relaunch the Processing code. The pond is essentially an open-ended research tool.
 
-<<<<<<< HEAD
 ![sl_5_c](/pond/media/sl_5_c.png)
 
 Video of ecosystem
-<iframe width="100%" height="450" src="https://youtu.be/IxBB1nkKZ4E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+![pondmovie](/pond/media/pondmovie.mov)
 
 Link to code: https://github.com/burnedsap/pond/tree/main/Processing%20Code
 Use 'sketch_AL_5_2_Pred': https://github.com/burnedsap/pond/tree/main/Processing%20Code/sketch_AL_5_2_Pred
-=======
-![sl_5_c](/pond/media/sl_5_c.png)
->>>>>>> parent of 88f0df5 (vid)
