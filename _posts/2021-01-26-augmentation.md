@@ -82,7 +82,7 @@ This ecosystem, or the pond as it’s affectionately known serves a functional t
 ![sl_5_c](/pond/media/sl_5_c.png)
 
 Video of ecosystem
-![Pond Movie](/pond/media/pondmovie.mov)
+<iframe width="100%" height="450" src="https://youtu.be/IxBB1nkKZ4E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Link to code: https://github.com/burnedsap/pond/tree/main/Processing%20Code
 Use 'sketch_AL_5_2_Pred': https://github.com/burnedsap/pond/tree/main/Processing%20Code/sketch_AL_5_2_Pred
