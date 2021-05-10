@@ -153,7 +153,7 @@ class Hachi {
 
   void display() { //displays stuff
     colorMode(HSB, 360, 100, 100);
-    fill(0);
+    fill(237, 0, 0);
     noStroke();
     r = map(hunger, 0, 10, 0, 8);
     float theta = vel.heading() + PI/2;
@@ -164,8 +164,8 @@ class Hachi {
     beginShape();
     stroke(255);
     vertex(0, -r*2);
-    vertex(-r, r*2);
-    vertex(r, r*2);
+    vertex(-r*1.5, r*2);
+    vertex(r*1.5, r*2);
     endShape(CLOSE);
     popMatrix();
   }
@@ -198,7 +198,7 @@ class Hachi {
       PVector foodposition = part.loc;
       float d = PVector.dist(loc, foodposition);
 
-      if (d < r*3) {
+      if ((d < r*3)&&(hunger<10)) {
         hunger++;
         o.remove(i);
       }

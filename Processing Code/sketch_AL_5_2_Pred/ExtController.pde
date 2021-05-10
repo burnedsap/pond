@@ -8,7 +8,7 @@ class ChildApplet extends PApplet {
   }
 
   public void settings() {
-    size(440, 850);
+    size(440, 860);
   }
   public void setup() {
     surface.setTitle("Controllers");

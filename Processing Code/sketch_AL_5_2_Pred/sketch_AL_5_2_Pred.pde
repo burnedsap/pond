@@ -1,12 +1,5 @@
 /*
-  This is the standard version, to be benchmarked against others
- 
- Missing: Homeostasis
- 
- To do list
- 1. Make it look nicer visually √
- 2. Write documentation blog and upload
- 3. 
+  This is the standard version which includes controls to enable Sharing and Environment Centered Survival
  */
 //Secondary Window
 import controlP5.*;
@@ -22,7 +15,6 @@ PFont myFontC;
 PFont myFontI;
 int timer;
 float totalTime = 0;
-Table table;
 FloatList OpusN = new FloatList();
 FloatList HachiN = new FloatList();
 FloatList PlantN = new FloatList();
@@ -74,24 +66,11 @@ void setup() {
   //load in custom fonts
   myFontC = loadFont("CircularStd-Medium-14.vlw");
   myFontI = loadFont("Inter-Regular-12.vlw");
-  //table = new Table();
-
-  //table.addColumn("opus-number");
-  //table.addColumn("opus-avg-speed");
-  //table.addColumn("opus-avg-vision");
-  //table.addColumn("opus-avg-htr");
-  //table.addColumn("opus-avg-age");
-  //table.addColumn("hachi-number");
-  //table.addColumn("hachi-avg-speed");
-  //table.addColumn("hachi-avg-vision");
-  //table.addColumn("hachi-avg-htr");
-  //table.addColumn("hachi-avg-age");
-  //table.addColumn("plant-number");
 }
 
 void draw() {
-  background(159, 200);
-  totalTime += millis()/1000;
+  background(237, 84, 8);
+  //totalTime += millis()/1000;
   if (world != null) {
     world.run();
 
@@ -111,7 +90,7 @@ void draw() {
       OpusN.append(world.op.size());
       HachiN.append(world.hc.size());
       PlantN.append(world.plnt.size());
-      totalTime += 1;
+      //totalTime += 1;
       timer = millis();
     }
 
@@ -138,26 +117,5 @@ void draw() {
       vertex(x, y);
     }
     endShape();
-
-  //text(frameRate, 100, 100);
-    //println(totalTime);
-    //println(totalTime);
-    //if (totalTime>3000000) {
-    //  saveTable(table, "analytics/data"+hour()+minute()+second()+"-###.csv");
-    //  exit();
-    //}
   }
-
-  //if (keyPressed) {
-  //  world = null;
-  //  totalTime = 0;
-  //  timer = 0;
-  //  OpusN.clear();
-  //  HachiN.clear();
-  //  PlantN.clear();
-  //  clear();
-  //  world = new World(20, 50, 70);
-  //  //remove();
-  //  //world.reset();
-  //}
 }

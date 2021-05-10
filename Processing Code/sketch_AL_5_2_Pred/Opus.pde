@@ -114,7 +114,7 @@ class Opus {
 
     //Controllers
     //if ((minPlantVal<vision)&&(hunger<4)&&(plantSize<r*6)) {
-    if ((minOpusVal<r*2)&&(hunger>reproduce)&&(hunger>exo.hunger)&&(share>OpusShare)&&(exo.share>OpusShare)) {
+    if ((minOpusVal<r*2)&&(hunger>reproduce)&&(hunger>exo.hunger)&&(exo.hunger<exo.reproduce)&&(share>OpusShare)&&(exo.share>OpusShare)) {
       println("Shared");
       hunger--;
       exo.hunger++;
