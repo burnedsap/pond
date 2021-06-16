@@ -1,9 +1,14 @@
 # pond
 zoomin
 
-Use 5_1 for commented code and version to play around with
+Use 5_2_Pred for commented code and version to play around with
 
-To Do List
+##### Attribution
+
+This wouldn't have been possible without Daniel Shiffman's Nature of Code. I've borrowed some code directly from the chapters.
+
+
+##### To Do List
 
 - [x] Insert upto 3 types of entities
 - [x] Add death
@@ -20,6 +25,6 @@ To Do List
   - [ ] they zoomin too much-slow down 🛑
 
 Issues
-- imbalanced performance
+- [x] imbalanced performance
 
 https://burnedsap.github.io/pond/
