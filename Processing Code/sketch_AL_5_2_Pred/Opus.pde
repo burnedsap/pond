@@ -2,9 +2,7 @@
 2nd in food chain
  Eats Food
  Eaten by Opus
- 
- //add plant reproduce limit
- */
+*/
 class Opus {
   PVector loc;
   PVector vel;
