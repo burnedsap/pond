@@ -79,7 +79,7 @@ A. A relevant question, given that humans are asking themselves the same questio
 
 This ecosystem, or the pond as it’s affectionately known serves a functional test-bed to research and answer questions one might have. It’s also a fun tool to play around with, as changing the values of the various parameters can lead to interesting outcomes. To make the pond accessible, a control panel with various parameter controls was developed. It contains various controls, as well as a reset button, which makes it easy to set parameters, reset and view the outcome without having to recompile and relaunch the Processing code. The pond is essentially an open-ended research tool.
 
-<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRMvnitx9Pq1k-8WqsmvPHrL25x0psOnQ_IaVcsp0H-WLxdRIN6DXCiM1RQj24WqqK2NYlNXFzvJldh/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRMvnitx9Pq1k-8WqsmvPHrL25x0psOnQ_IaVcsp0H-WLxdRIN6DXCiM1RQj24WqqK2NYlNXFzvJldh/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 ![sl_5_c](/pond/media/sl_5_c.png)
 
